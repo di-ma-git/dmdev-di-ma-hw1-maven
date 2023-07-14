@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:postgresql://172.17.225.240:5432/postgres</property>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">Qazwsxedc1@</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <mapping class="com.dmdev.dima.entity.User"/>
+        <mapping class="com.dmdev.dima.entity.PermissionRole"/>
+        <mapping class="com.dmdev.dima.entity.Product"/>
+        <mapping class="com.dmdev.dima.entity.Manufacturer"/>
+        <mapping class="com.dmdev.dima.entity.ActiveSubstance"/>
+        <mapping class="com.dmdev.dima.entity.ProductCategory"/>
+        <mapping class="com.dmdev.dima.entity.Order"/>
+        <mapping class="com.dmdev.dima.entity.Payment"/>
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>
