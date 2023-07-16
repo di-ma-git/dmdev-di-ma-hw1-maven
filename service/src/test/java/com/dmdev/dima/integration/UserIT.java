@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserIT extends TestBase {
 
     @Test
-    void saveUserSuccessfulTest() {
+    void saveUserSuccessful() {
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
         user.addOrder(order);
@@ -26,7 +26,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void getUserSuccessfulTest() {
+    void getUserSuccessful() {
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
         user.addOrder(order);
@@ -42,7 +42,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void updateUserSuccessfulTest() {
+    void updateUserSuccessful() {
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
         user.addOrder(order);
@@ -59,7 +59,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void deleteUserSuccessfulTest() {
+    void deleteUserSuccessful() {
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
         user.addOrder(order);
@@ -76,7 +76,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void getUserOrdersTest() {
+    void getUserOrders() {
         var user = testData.getSimpleTestUser();
         var order1 = Order.builder()
                 .orderStatus(OrderStatus.NOT_PAID)
@@ -102,7 +102,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void saveUserCascadeOrdersTest() {
+    void saveUserCascadeOrders() {
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
         user.addOrder(order);
@@ -118,7 +118,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void deleteUserCascadeOrdersTest() {
+    void deleteUserCascadeOrders() {
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
         user.addOrder(order);
@@ -138,7 +138,7 @@ public class UserIT extends TestBase {
     }
 
     @Test
-    void orphanRemovalDeleteTest() {
+    void orphanRemovalDelete() {
         var user = testData.getSimpleTestUser();
         var order1 = Order.builder()
                 .orderStatus(OrderStatus.NOT_PAID)

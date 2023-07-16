@@ -3,7 +3,6 @@ package com.dmdev.dima.integration;
 import com.dmdev.dima.entity.Product;
 import com.dmdev.dima.entity.ProductCategory;
 import org.junit.jupiter.api.Test;
-import testData.TestData;
 import util.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProductCategoryIT extends TestBase {
 
     @Test
-    void saveProductCategorySuccessfulTest() {
+    void saveProductCategorySuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var product = testData.getSimpleTestProduct();
 
@@ -24,7 +23,7 @@ public class ProductCategoryIT extends TestBase {
         assertThat(productCategory.getId()).isNotNull();
     }
     @Test
-    void getProductCategorySuccessfulTest() {
+    void getProductCategorySuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var product = testData.getSimpleTestProduct();
         productCategory.addProduct(product);
@@ -42,7 +41,7 @@ public class ProductCategoryIT extends TestBase {
     }
 
     @Test
-    void updateProductCategorySuccessfulTest() {
+    void updateProductCategorySuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var product = testData.getSimpleTestProduct();
         productCategory.addProduct(product);
@@ -63,7 +62,7 @@ public class ProductCategoryIT extends TestBase {
     }
 
     @Test
-    void deleteProductCategorySuccessfulTest() {
+    void deleteProductCategorySuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var product = testData.getSimpleTestProduct();
         productCategory.addProduct(product);
@@ -82,7 +81,7 @@ public class ProductCategoryIT extends TestBase {
     }
 
     @Test
-    void addingProductToProductCategorySuccessfulTest() {
+    void addingProductToProductCategorySuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var product1 = testData.getSimpleTestProduct();
         productCategory.addProduct(product1);

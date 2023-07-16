@@ -18,8 +18,8 @@ public class TestBase {
 
     @BeforeAll
     static void init() {
-//        sessionFactory = HibernateTestUtil.buildSessionFactory();
-        sessionFactory = HibernateUtil.buildSessionFactory();
+        sessionFactory = HibernateTestUtil.buildSessionFactory();
+//        sessionFactory = HibernateUtil.buildSessionFactory();
     }
 
     @AfterAll

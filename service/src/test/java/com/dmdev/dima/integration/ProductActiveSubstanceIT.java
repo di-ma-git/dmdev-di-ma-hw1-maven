@@ -1,11 +1,8 @@
 package com.dmdev.dima.integration;
 
-import com.dmdev.dima.entity.ActiveSubstance;
 import com.dmdev.dima.entity.Product;
 import com.dmdev.dima.entity.ProductActiveSubstance;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import testData.TestData;
 import util.TestBase;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProductActiveSubstanceIT extends TestBase {
 
     @Test
-    void createProductActiveSubstanceSuccessfulTest() {
+    void createProductActiveSubstanceSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
         var product = testData.getSimpleTestProduct();
         var productActiveSubstance = ProductActiveSubstance.builder()
@@ -32,7 +29,7 @@ public class ProductActiveSubstanceIT extends TestBase {
     }
 
     @Test
-    void getProductActiveSubstanceSuccessfulTest() {
+    void getProductActiveSubstanceSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
         var product = testData.getSimpleTestProduct();
         var productActiveSubstance = ProductActiveSubstance.builder()
@@ -52,7 +49,7 @@ public class ProductActiveSubstanceIT extends TestBase {
         assertThat(actualResult).isEqualTo(productActiveSubstance);
     }
     @Test
-    void getActiveSubstanceByProductSuccessfulTest() {
+    void getActiveSubstanceByProductSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
         var product = testData.getSimpleTestProduct();
         var productActiveSubstance = ProductActiveSubstance.builder()

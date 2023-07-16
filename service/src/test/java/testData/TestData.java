@@ -8,7 +8,6 @@ import com.dmdev.dima.entity.ProductCategory;
 import com.dmdev.dima.entity.User;
 import com.dmdev.dima.entity.enums.OrderStatus;
 import com.dmdev.dima.entity.enums.Role;
-import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

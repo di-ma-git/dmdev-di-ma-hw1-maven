@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OrderIT extends TestBase {
 
     @Test
-    void saveOrderSuccessfulTest() {
+    void saveOrderSuccessful() {
         var user = User.builder()
                 .name("someuser2")
                 .email("test2@gmail.com")
@@ -41,7 +41,7 @@ public class OrderIT extends TestBase {
     }
 
     @Test
-    void getOrderSuccessfulTest() {
+    void getOrderSuccessful() {
         var user = User.builder()
                 .name("someuser2")
                 .email("test2@gmail.com")
@@ -67,7 +67,7 @@ public class OrderIT extends TestBase {
     }
 
     @Test
-    void updateOrderSuccessfulTest() {
+    void updateOrderSuccessful() {
         var user = User.builder()
                 .name("someuser2")
                 .email("test2@gmail.com")
@@ -94,7 +94,7 @@ public class OrderIT extends TestBase {
     }
 
     @Test
-    void deleteOrderButNotDeleteUserSuccessfulTest() {
+    void deleteOrderButNotDeleteUserSuccessful() {
         var user = User.builder()
                 .name("someuser2")
                 .email("test2@gmail.com")
@@ -154,13 +154,11 @@ public class OrderIT extends TestBase {
                 .description("Some description of product2")
                 .build();
         var productInOrder1 = ProductInOrder.builder()
-                .id(1L)
                 .order(order)
                 .product(product1)
                 .quantity(25)
                 .build();
         var productInOrder2 = ProductInOrder.builder()
-                .id(2L)
                 .order(order)
                 .product(product2)
                 .quantity(100)
@@ -182,5 +180,4 @@ public class OrderIT extends TestBase {
 
         assertThat(actualResult.getProductsInOrder()).hasSize(2);
     }
-
 }

@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ManufacturerIT extends TestBase {
 
     @Test
-    void saveManufacturerSuccessfulTest() {
+    void saveManufacturerSuccessful() {
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = testData.getSimpleTestProduct();
         product.setManufacturer(manufacturer);
@@ -21,7 +21,7 @@ public class ManufacturerIT extends TestBase {
     }
 
     @Test
-    void getManufacturerSuccessfulTest() {
+    void getManufacturerSuccessful() {
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = testData.getSimpleTestProduct();
         product.setManufacturer(manufacturer);
@@ -38,7 +38,7 @@ public class ManufacturerIT extends TestBase {
         assertThat(actualResult.getProducts()).hasSize(1);
     }
     @Test
-    void updateManufacturerSuccessfulTest() {
+    void updateManufacturerSuccessful() {
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = testData.getSimpleTestProduct();
         product.setManufacturer(manufacturer);
@@ -58,7 +58,7 @@ public class ManufacturerIT extends TestBase {
         assertThat(actualResult.getDescription()).isEqualTo(manufacturer.getDescription());
     }
     @Test
-    void deleteManufacturerSuccessfulTest() {
+    void deleteManufacturerSuccessful() {
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = testData.getSimpleTestProduct();
         product.setManufacturer(manufacturer);

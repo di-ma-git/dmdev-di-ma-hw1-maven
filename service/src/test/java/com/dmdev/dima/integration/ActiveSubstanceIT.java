@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ActiveSubstanceIT extends TestBase {
 
     @Test
-    void saveUserSuccessfulTest() {
+    void saveUserSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
 
         session.beginTransaction();
@@ -21,7 +21,7 @@ public class ActiveSubstanceIT extends TestBase {
     }
 
     @Test
-    void getActiveSubstanceSuccessfulTest() {
+    void getActiveSubstanceSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
 
         session.beginTransaction();
@@ -36,7 +36,7 @@ public class ActiveSubstanceIT extends TestBase {
     }
 
     @Test
-    void updateActiveSubstanceSuccessfulTest() {
+    void updateActiveSubstanceSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
 
         session.beginTransaction();
@@ -54,7 +54,7 @@ public class ActiveSubstanceIT extends TestBase {
     }
 
     @Test
-    void deleteActiveSubstanceSuccessfulTest() {
+    void deleteActiveSubstanceSuccessful() {
         var activeSubstance = testData.getSimpleTestActiveSubstance();
 
         session.beginTransaction();

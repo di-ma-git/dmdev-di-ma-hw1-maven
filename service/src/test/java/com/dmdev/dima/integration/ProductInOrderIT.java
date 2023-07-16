@@ -1,22 +1,19 @@
 package com.dmdev.dima.integration;
 
-import com.dmdev.dima.entity.Order;
 import com.dmdev.dima.entity.Product;
 import com.dmdev.dima.entity.ProductInOrder;
 import com.dmdev.dima.entity.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import util.TestBase;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductInOrderIT extends TestBase {
 
     @Test
-    void createProductInOrderSuccessfulTest() {
+    void createProductInOrderSuccessful() {
         var product = testData.getSimpleTestProduct();
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();
@@ -39,7 +36,7 @@ public class ProductInOrderIT extends TestBase {
     }
 
     @Test
-    void getProductInOrderSuccessfulTest() {
+    void getProductInOrderSuccessful() {
         var product = testData.getSimpleTestProduct();
         var user = testData.getSimpleTestUser();
         var order = testData.getSimpleTestOrder();

@@ -1,12 +1,6 @@
 package com.dmdev.dima.integration;
 
-import com.dmdev.dima.entity.ActiveSubstance;
-import com.dmdev.dima.entity.Manufacturer;
-import com.dmdev.dima.entity.Order;
 import com.dmdev.dima.entity.Product;
-import com.dmdev.dima.entity.ProductActiveSubstance;
-import com.dmdev.dima.entity.ProductCategory;
-import com.dmdev.dima.entity.User;
 import org.junit.jupiter.api.Test;
 import util.TestBase;
 
@@ -15,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProductIT extends TestBase {
 
     @Test
-    void saveProductSuccessfulTest() {
+    void saveProductSuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var manufacturer = testData.getSimpleTestManufacturer();
         var activeSubstance = testData.getSimpleTestActiveSubstance();
@@ -44,7 +38,7 @@ public class ProductIT extends TestBase {
     }
 
     @Test
-    void getProductSuccessfulTest() {
+    void getProductSuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = Product.builder()
@@ -75,7 +69,7 @@ public class ProductIT extends TestBase {
     }
 
     @Test
-    void updateProductSuccessfulTest() {
+    void updateProductSuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = Product.builder()
@@ -107,7 +101,7 @@ public class ProductIT extends TestBase {
         assertThat(actualResult.getPrice()).isEqualTo(product.getPrice());
     }
     @Test
-    void deleteProductSuccessfulTest() {
+    void deleteProductSuccessful() {
         var productCategory = testData.getSimpleTestProductCategory();
         var manufacturer = testData.getSimpleTestManufacturer();
         var product = Product.builder()
@@ -136,8 +130,4 @@ public class ProductIT extends TestBase {
 
         assertThat(actualResult).isNull();
     }
-
-
-
-
 }

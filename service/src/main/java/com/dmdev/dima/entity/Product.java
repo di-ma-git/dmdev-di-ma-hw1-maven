@@ -21,7 +21,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -48,8 +47,8 @@ public class Product {
     private ProductCategory productCategory;
     @ManyToOne(fetch = FetchType.LAZY)
     private Manufacturer manufacturer;
+
     @Builder.Default
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductActiveSubstance> productActiveSubstances = new ArrayList<>();
 }
