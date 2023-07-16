@@ -8,30 +8,32 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "productActiveSubstances")
-@ToString(exclude = "productActiveSubstances")
+@EqualsAndHashCode(exclude = {"order", "product"})
+@ToString(exclude = {"order", "product"})
 @Builder
 @Entity
-public class ActiveSubstance {
+public class ProductInOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
+    private Integer quantity;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "activeSubstance")
-    private List<ProductActiveSubstance> productActiveSubstances = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
