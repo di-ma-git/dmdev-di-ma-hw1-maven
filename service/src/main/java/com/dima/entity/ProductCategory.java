@@ -22,7 +22,7 @@ import java.util.List;
 @ToString(exclude = "products")
 @Builder
 @Entity
-public class ProductCategory {
+public class ProductCategory implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

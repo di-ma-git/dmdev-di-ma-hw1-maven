@@ -3,6 +3,7 @@ package com.dima.integration;
 import com.dima.entity.Order;
 import com.dima.entity.User;
 import com.dima.enums.OrderStatus;
+import com.dima.testData.TestSimpleData;
 import org.junit.jupiter.api.Test;
 import com.dima.util.TestBase;
 
@@ -14,8 +15,8 @@ public class UserIT extends TestBase {
 
     @Test
     void saveUserSuccessful() {
-        var user = testSimpleData.getSimpleTestUser();
-        var order = testSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
+        var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
 
         session.beginTransaction();
@@ -27,8 +28,8 @@ public class UserIT extends TestBase {
 
     @Test
     void getUserSuccessful() {
-        var user = testSimpleData.getSimpleTestUser();
-        var order = testSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
+        var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
 
         session.beginTransaction();
@@ -43,8 +44,8 @@ public class UserIT extends TestBase {
 
     @Test
     void updateUserSuccessful() {
-        var user = testSimpleData.getSimpleTestUser();
-        var order = testSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
+        var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
 
         session.beginTransaction();
@@ -60,8 +61,8 @@ public class UserIT extends TestBase {
 
     @Test
     void deleteUserSuccessful() {
-        var user = testSimpleData.getSimpleTestUser();
-        var order = testSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
+        var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
 
         session.beginTransaction();
@@ -77,7 +78,7 @@ public class UserIT extends TestBase {
 
     @Test
     void getUserOrders() {
-        var user = testSimpleData.getSimpleTestUser();
+        var user = TestSimpleData.getSimpleTestUser();
         var order1 = Order.builder()
                 .orderStatus(OrderStatus.NOT_PAID)
                 .orderDate(LocalDateTime.now())
@@ -103,8 +104,8 @@ public class UserIT extends TestBase {
 
     @Test
     void saveUserCascadeOrders() {
-        var user = testSimpleData.getSimpleTestUser();
-        var order = testSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
+        var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
 
         session.beginTransaction();
@@ -119,8 +120,8 @@ public class UserIT extends TestBase {
 
     @Test
     void deleteUserCascadeOrders() {
-        var user = testSimpleData.getSimpleTestUser();
-        var order = testSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
+        var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
 
         session.beginTransaction();
@@ -139,7 +140,7 @@ public class UserIT extends TestBase {
 
     @Test
     void orphanRemovalDelete() {
-        var user = testSimpleData.getSimpleTestUser();
+        var user = TestSimpleData.getSimpleTestUser();
         var order1 = Order.builder()
                 .orderStatus(OrderStatus.NOT_PAID)
                 .orderDate(LocalDateTime.now())

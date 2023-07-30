@@ -8,9 +8,12 @@ import com.dima.entity.ProductCategory;
 import com.dima.entity.User;
 import com.dima.enums.OrderStatus;
 import com.dima.enums.Role;
+import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
+@UtilityClass
 public class TestSimpleData {
 
     public User getSimpleTestUser() {

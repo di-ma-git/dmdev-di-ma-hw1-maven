@@ -22,7 +22,7 @@ import java.util.List;
 @ToString(exclude = "productActiveSubstances")
 @Builder
 @Entity
-public class ActiveSubstance {
+public class ActiveSubstance implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

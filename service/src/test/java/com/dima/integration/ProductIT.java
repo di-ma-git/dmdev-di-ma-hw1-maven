@@ -1,6 +1,7 @@
 package com.dima.integration;
 
 import com.dima.entity.Product;
+import com.dima.testData.TestSimpleData;
 import org.junit.jupiter.api.Test;
 import com.dima.util.TestBase;
 
@@ -10,11 +11,11 @@ public class ProductIT extends TestBase {
 
     @Test
     void saveProductSuccessful() {
-        var productCategory = testSimpleData.getSimpleTestProductCategory();
-        var manufacturer = testSimpleData.getSimpleTestManufacturer();
-        var activeSubstance = testSimpleData.getSimpleTestActiveSubstance();
-        var order = testSimpleData.getSimpleTestOrder();
-        var user = testSimpleData.getSimpleTestUser();
+        var productCategory = TestSimpleData.getSimpleTestProductCategory();
+        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
+        var activeSubstance = TestSimpleData.getSimpleTestActiveSubstance();
+        var order = TestSimpleData.getSimpleTestOrder();
+        var user = TestSimpleData.getSimpleTestUser();
         var product = Product.builder()
                 .name("Aspirine")
                 .price(20.33F)
@@ -39,8 +40,8 @@ public class ProductIT extends TestBase {
 
     @Test
     void getProductSuccessful() {
-        var productCategory = testSimpleData.getSimpleTestProductCategory();
-        var manufacturer = testSimpleData.getSimpleTestManufacturer();
+        var productCategory = TestSimpleData.getSimpleTestProductCategory();
+        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
         var product = Product.builder()
                 .name("Aspirine")
                 .price(20.33F)
@@ -70,8 +71,8 @@ public class ProductIT extends TestBase {
 
     @Test
     void updateProductSuccessful() {
-        var productCategory = testSimpleData.getSimpleTestProductCategory();
-        var manufacturer = testSimpleData.getSimpleTestManufacturer();
+        var productCategory = TestSimpleData.getSimpleTestProductCategory();
+        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
         var product = Product.builder()
                 .name("Aspirine")
                 .price(20.33F)
@@ -100,10 +101,11 @@ public class ProductIT extends TestBase {
 
         assertThat(actualResult.getPrice()).isEqualTo(product.getPrice());
     }
+
     @Test
     void deleteProductSuccessful() {
-        var productCategory = testSimpleData.getSimpleTestProductCategory();
-        var manufacturer = testSimpleData.getSimpleTestManufacturer();
+        var productCategory = TestSimpleData.getSimpleTestProductCategory();
+        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
         var product = Product.builder()
                 .name("Aspirine")
                 .price(20.33F)

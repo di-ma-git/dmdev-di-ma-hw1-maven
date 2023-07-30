@@ -33,7 +33,7 @@ import java.util.List;
 @ToString(exclude = "productsInOrder")
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,5 +58,19 @@ public class Order {
         this.productsInOrder.add(productsInOrder);
         productsInOrder.setOrder(this);
     }
+
+//    public void totalSum() {
+//        var iterator = productsInOrder.iterator();
+//
+//        for (ProductInOrder productInOrder : productsInOrder) {
+//        BigDecimal.valueOf(productInOrder.getProduct().getPrice() * productInOrder.getQuantity());
+//
+//        }
+//
+//
+//        while (iterator.hasNext()) {
+//            productsInOrder.get(i).getProduct().getPrice();
+//        }
+//    }
 
 }
