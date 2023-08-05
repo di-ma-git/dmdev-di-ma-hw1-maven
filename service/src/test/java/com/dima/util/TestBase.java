@@ -1,37 +1,40 @@
 package com.dima.util;
 
+import com.dima.config.ApplicationTestConfiguration;
+import com.dima.testData.TestDataImport;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import com.dima.testData.TestSimpleData;
-import com.dima.testData.TestDataImport;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class TestBase {
 
-    static SessionFactory sessionFactory;
-    public Session session;
-    public static TestSimpleData testSimpleData;
+    protected static AnnotationConfigApplicationContext context;
+
+    public static Session session;
 
     @BeforeAll
     static void init() {
-        sessionFactory = HibernateUtil.buildSessionFactory();
-//        sessionFactory = HibernateTestUtil.buildSessionFactory();
-
+        context = new AnnotationConfigApplicationContext();
+        context.register(ApplicationTestConfiguration.class);
+        context.refresh();
+        session = context.getBean(Session.class);
     }
 
     @AfterAll
     static void close() {
-        sessionFactory.close();
+        context.close();
     }
 
     @BeforeEach
     void createSession() {
-        session = sessionFactory.openSession();
+        session.beginTransaction();
         TestDataImport.importData(session);
-
+        session.flush();
+        session.clear();
     }
 
     @AfterEach

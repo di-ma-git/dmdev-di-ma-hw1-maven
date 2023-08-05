@@ -14,6 +14,7 @@ import java.util.Optional;
 public abstract class RepositoryBase<K extends Serializable, E extends BaseEntity<K>> implements Repository<K, E> {
 
     private final Class<E> clazz;
+
     @Getter
     final EntityManager entityManager;
 

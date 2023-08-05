@@ -3,14 +3,14 @@ package com.dima.repositoryIntegration;
 import com.dima.entity.Manufacturer;
 import com.dima.repository.ManufacturerRepository;
 import com.dima.testData.TestSimpleData;
-import com.dima.util.TestBaseEntityManager;
+import com.dima.util.TestBase;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ManufacturerRepositoryIT extends TestBaseEntityManager {
+public class ManufacturerRepositoryIT extends TestBase {
 
-    private final ManufacturerRepository manufacturerRepository = new ManufacturerRepository(session);
+    private final ManufacturerRepository manufacturerRepository = context.getBean(ManufacturerRepository.class);
 
     @Test
     void saveManufacturerSuccessful() {

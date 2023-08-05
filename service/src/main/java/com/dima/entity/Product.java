@@ -50,7 +50,7 @@ public class Product implements BaseEntity<Long> {
     private MedicineType medicineType;
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory productCategory;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 

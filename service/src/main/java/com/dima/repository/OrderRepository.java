@@ -9,10 +9,10 @@ import com.dima.entity.User_;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class OrderRepository extends RepositoryBase<Long, Order> {
-
-    private OrderFilter filter;
 
     public OrderRepository(EntityManager entityManager) {
         super(Order.class, entityManager);
@@ -26,10 +26,11 @@ public class OrderRepository extends RepositoryBase<Long, Order> {
         var productInOrder = order.join(Order_.productsInOrder);
         var product = productInOrder.join(ProductInOrder_.product);
 
-        var predicates = CriteriaPredicate.builder(cb)
+        var predicateList = CriteriaPredicate.builder()
                 .add(filter.getStatus(), value -> cb.equal(order.get(Order_.orderStatus), value))
                 .add(filter.getUserName(), value -> cb.equal(user.get(User_.name), value))
-                .buildAnd();
+                .build();
+        var predicates = cb.and(predicateList.get(0), predicateList.get(1));
 
         criteria.select(order).where(predicates).distinct(true)
                 .orderBy(cb.asc(order.get(Order_.orderDate)));

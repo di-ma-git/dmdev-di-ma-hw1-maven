@@ -1,19 +1,17 @@
 package com.dima.repositoryIntegration;
 
-import com.dima.entity.User;
 import com.dima.enums.Role;
 import com.dima.repository.UserRepository;
 import com.dima.testData.TestSimpleData;
-import com.dima.util.TestBaseEntityManager;
+import com.dima.util.TestBase;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserRepositoryIT extends TestBaseEntityManager {
+class UserRepositoryIT extends TestBase {
 
-    private final UserRepository userRepository = new UserRepository(session);
+    private final UserRepository userRepository = context.getBean(UserRepository.class);
 
     @Test
     void saveUserSuccessful() {

@@ -4,15 +4,15 @@ import com.dima.entity.Product;
 import com.dima.repository.ProductCategoryRepository;
 import com.dima.repository.ProductRepository;
 import com.dima.testData.TestSimpleData;
-import com.dima.util.TestBaseEntityManager;
+import com.dima.util.TestBase;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProductCategoryRepositoryIT extends TestBaseEntityManager {
+public class ProductCategoryRepositoryIT extends TestBase {
 
-    private final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepository(session);
-    private final ProductRepository productRepository = new ProductRepository(session);
+    private final ProductCategoryRepository productCategoryRepository = context.getBean(ProductCategoryRepository.class);
+    private final ProductRepository productRepository = context.getBean(ProductRepository.class);
 
     @Test
     void saveProductCategorySuccessful() {

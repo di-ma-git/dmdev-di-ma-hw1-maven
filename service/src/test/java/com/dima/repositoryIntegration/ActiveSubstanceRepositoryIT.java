@@ -1,16 +1,17 @@
 package com.dima.repositoryIntegration;
 
+import com.dima.dto.ActiveSubstanceFilter;
 import com.dima.entity.ActiveSubstance;
 import com.dima.repository.ActiveSubstanceRepository;
 import com.dima.testData.TestSimpleData;
-import com.dima.util.TestBaseEntityManager;
+import com.dima.util.TestBase;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ActiveSubstanceRepositoryIT extends TestBaseEntityManager {
+public class ActiveSubstanceRepositoryIT extends TestBase {
 
-    private final ActiveSubstanceRepository activeSubstanceRepository = new ActiveSubstanceRepository(session);
+    private final ActiveSubstanceRepository activeSubstanceRepository = context.getBean(ActiveSubstanceRepository.class);
 
     @Test
     void saveUserSuccessful() {
@@ -70,8 +71,13 @@ public class ActiveSubstanceRepositoryIT extends TestBaseEntityManager {
     }
 
     @Test
-    void findActiveSubstancesByProduct() {
-        var result = activeSubstanceRepository.findByProduct("Aspirin", "Pfizer");
+    void findActiveSubstancesByProductAndManufacturer() {
+        var filter = ActiveSubstanceFilter.builder()
+                .productName("Aspirin")
+                .productManufacturerName("Pfizer")
+                .build();
+
+        var result = activeSubstanceRepository.findByFilter(filter);
 
         assertThat(result).hasSize(2);
 

@@ -9,7 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ManufacturerRepository extends RepositoryBase<Integer, Manufacturer> {
 
     private ManufacturerFilter filter;

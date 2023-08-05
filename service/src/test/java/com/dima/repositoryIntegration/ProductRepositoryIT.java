@@ -7,18 +7,18 @@ import com.dima.repository.ManufacturerRepository;
 import com.dima.repository.ProductCategoryRepository;
 import com.dima.repository.ProductRepository;
 import com.dima.testData.TestSimpleData;
-import com.dima.util.TestBaseEntityManager;
+import com.dima.util.TestBase;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProductRepositoryIT extends TestBaseEntityManager {
+public class ProductRepositoryIT extends TestBase {
 
-    private final ProductRepository productRepository = new ProductRepository(session);
-    private final ManufacturerRepository manufacturerRepository = new ManufacturerRepository(session);
-    private final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepository(session);
+    private final ProductRepository productRepository = context.getBean(ProductRepository.class);
+    private final ManufacturerRepository manufacturerRepository = context.getBean(ManufacturerRepository.class);
+    private final ProductCategoryRepository productCategoryRepository = context.getBean(ProductCategoryRepository.class);
 
     @Test
     void saveProductSuccessful() {
@@ -141,7 +141,11 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
     @Test
     void findAllProductsByName() {
-        var result = productRepository.findAllProductsByName("Aspirin");
+        var filter = ProductFilter.builder()
+                .name("Aspirin")
+                .build();
+
+        var result = productRepository.findByFilter(filter);
 
         assertThat(result).hasSize(2);
 
@@ -154,7 +158,11 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
     @Test
     void findAllProductsByManufacturerName() {
-        var result = productRepository.findByManufacturer("Pharmacom");
+        var filter = ProductFilter.builder()
+                .manufacturer("Pharmacom")
+                .build();
+
+        var result = productRepository.findByFilter(filter);
 
         assertThat(result).hasSize(2);
 
@@ -167,7 +175,11 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
     @Test
     void findAllProductsByCategoryName() {
-        var result = productRepository.findByCategory("Painkillers");
+        var filter = ProductFilter.builder()
+                .productCategory("Painkillers")
+                .build();
+
+        var result = productRepository.findByFilter(filter);
 
         assertThat(result).hasSize(2);
 
@@ -180,7 +192,11 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
     @Test
     void findAllProductsBySeveralMedicineType() {
-        var result = productRepository.findByMedicineType(MedicineType.CAPSULES, MedicineType.INJECTIONS);
+        var filter = ProductFilter.builder()
+                .medicineTypes(List.of(MedicineType.CAPSULES, MedicineType.INJECTIONS))
+                .build();
+
+        var result = productRepository.findByFilter(filter);
 
         assertThat(result).hasSize(6);
 
@@ -193,7 +209,11 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
     @Test
     void findAllProductsByActiveSubstance() {
-        var result = productRepository.findByActiveSubstance("Ascorbic acid");
+        var filter = ProductFilter.builder()
+                .activeSubstance("Ascorbic acid")
+                .build();
+
+        var result = productRepository.findByFilter(filter);
 
         assertThat(result).hasSize(4);
 
@@ -206,7 +226,6 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
     @Test
     void findAllProductsByFilterWithMinAndMaxPrice() {
-
         var filter = ProductFilter.builder()
                 .priceMin(30F)
                 .priceMax(300F)
@@ -227,6 +246,7 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
     void findAllProductsByFilterWithOnlyMaxPrice() {
 
         var filter = ProductFilter.builder()
+                .priceMin(0F)
                 .priceMax(50F)
                 .build();
 
@@ -258,6 +278,4 @@ public class ProductRepositoryIT extends TestBaseEntityManager {
 
         assertThat(actualResult).contains(MedicineType.CAPSULES);
     }
-
-
 }
