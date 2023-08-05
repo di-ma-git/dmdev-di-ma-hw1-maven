@@ -14,12 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Data
-@AllArgsConstructor@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = {"activeSubstance", "product"})
 @ToString(exclude = {"activeSubstance", "product"})
 @Builder
 @Entity
-public class ProductActiveSubstance {
+public class ProductActiveSubstance implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,7 @@ public class ProductActiveSubstance {
         this.product = product;
         this.product.getProductActiveSubstances().add(this);
     }
+
     public void setActiveSubstance(ActiveSubstance activeSubstance) {
         this.activeSubstance = activeSubstance;
         this.activeSubstance.getProductActiveSubstances().add(this);

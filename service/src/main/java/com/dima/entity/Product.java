@@ -34,7 +34,7 @@ import java.util.List;
 @ToString(exclude = {"manufacturer", "productActiveSubstances", "productCategory"})
 @Builder
 @Entity
-public class Product {
+public class Product implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +50,7 @@ public class Product {
     private MedicineType medicineType;
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductCategory productCategory;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 

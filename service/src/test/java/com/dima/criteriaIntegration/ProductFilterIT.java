@@ -247,7 +247,8 @@ public class ProductFilterIT extends TestBase {
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.between(product.get(Product_.price), filter.getPriceMin(), filter.getPriceMax()));
 
-        criteria.select(product).where(predicates.toArray(Predicate[]::new)).orderBy(cb.asc(product.get(Product_.price)));
+        criteria.select(product).where(predicates.toArray(Predicate[]::new))
+                .orderBy(cb.asc(product.get(Product_.price)));
 
         var result = session.createQuery(criteria).list();
 
