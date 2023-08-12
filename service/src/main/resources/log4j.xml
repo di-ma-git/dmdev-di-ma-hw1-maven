@@ -14,8 +14,8 @@
         <param name="file" value="hibernate.log"/>
 
         <param name="append" value="true"/>
-        <param name="maxFileSize" value="5KB"/>
-        <param name="maxBackupIndex" value="10"/>
+        <param name="maxFileSize" value="15KB"/>
+        <param name="maxBackupIndex" value="1"/>
 
         <layout class="org.apache.log4j.PatternLayout">
             <param name="conversionPattern" value="[%d{HH:mm:ss,SSS}] %p {%c: %L} %m%n"/>

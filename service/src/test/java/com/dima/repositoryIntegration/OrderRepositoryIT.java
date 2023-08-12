@@ -9,23 +9,21 @@ import com.dima.enums.OrderStatus;
 import com.dima.enums.Role;
 import com.dima.repository.OrderRepository;
 import com.dima.repository.UserRepository;
-import com.dima.util.TestBaseEntityManager;
+import com.dima.util.TestBase;
 import org.hibernate.graph.GraphSemantic;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OrderRepositoryIT extends TestBaseEntityManager {
+public class OrderRepositoryIT extends TestBase {
 
-    private final OrderRepository orderRepository = new OrderRepository(session);
-    private final UserRepository userRepository = new UserRepository(session);
+    private final OrderRepository orderRepository = context.getBean(OrderRepository.class);
+    private final UserRepository userRepository = context.getBean(UserRepository.class);
 
     @Test
     void saveOrderSuccessful() {

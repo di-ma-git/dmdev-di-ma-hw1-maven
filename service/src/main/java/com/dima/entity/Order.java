@@ -59,18 +59,4 @@ public class Order implements BaseEntity<Long> {
         productsInOrder.setOrder(this);
     }
 
-//    public void totalSum() {
-//        var iterator = productsInOrder.iterator();
-//
-//        for (ProductInOrder productInOrder : productsInOrder) {
-//        BigDecimal.valueOf(productInOrder.getProduct().getPrice() * productInOrder.getQuantity());
-//
-//        }
-//
-//
-//        while (iterator.hasNext()) {
-//            productsInOrder.get(i).getProduct().getPrice();
-//        }
-//    }
-
 }

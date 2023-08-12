@@ -31,8 +31,10 @@ public class QPredicate {
     }
 
     public <K extends Collection> QPredicate add(K collection, Function<K, Predicate> function) {
-        if (!collection.isEmpty()) {
-            predicates.add(function.apply(collection));
+        if (collection != null) {
+            if (!collection.isEmpty()) {
+                predicates.add(function.apply(collection));
+            }
         }
         return this;
     }
@@ -47,6 +49,7 @@ public class QPredicate {
     public Predicate buildAnd() {
         return ExpressionUtils.allOf(predicates);
     }
+
     public Predicate buildOr() {
         return ExpressionUtils.anyOf(predicates);
     }

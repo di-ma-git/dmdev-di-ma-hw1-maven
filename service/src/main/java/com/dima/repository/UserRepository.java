@@ -3,10 +3,12 @@ package com.dima.repository;
 import com.dima.entity.User;
 import com.dima.entity.User_;
 import com.dima.enums.Role;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+@Repository
 public class UserRepository extends RepositoryBase<Long, User> {
 
     public UserRepository(EntityManager entityManager) {
@@ -14,7 +16,6 @@ public class UserRepository extends RepositoryBase<Long, User> {
     }
 
     public List<User> findUsersByRole(Role role) {
-
         var cb = getEntityManager().getCriteriaBuilder();
         var criteria = cb.createQuery(User.class);
         var user = criteria.from(User.class);

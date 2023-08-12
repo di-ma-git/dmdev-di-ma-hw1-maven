@@ -12,16 +12,6 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">validate</property>
-
-        <mapping class="com.dima.entity.User"/>
-        <mapping class="com.dima.entity.Product"/>
-        <mapping class="com.dima.entity.Manufacturer"/>
-        <mapping class="com.dima.entity.ActiveSubstance"/>
-        <mapping class="com.dima.entity.ProductCategory"/>
-        <mapping class="com.dima.entity.Order"/>
-        <mapping class="com.dima.entity.ProductInOrder"/>
-        <mapping class="com.dima.entity.ProductActiveSubstance"/>
-
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
     </session-factory>

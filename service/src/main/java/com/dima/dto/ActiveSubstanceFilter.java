@@ -8,5 +8,5 @@ import lombok.Value;
 public class ActiveSubstanceFilter {
 
     String productName;
-    String productManufacturer;
+    String productManufacturerName;
 }
