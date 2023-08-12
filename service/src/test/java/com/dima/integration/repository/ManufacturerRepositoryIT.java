@@ -1,24 +1,31 @@
-package com.dima.repositoryIntegration;
+package com.dima.integration.repository;
 
 import com.dima.entity.Manufacturer;
 import com.dima.repository.ManufacturerRepository;
-import com.dima.testData.TestSimpleData;
+import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ManufacturerRepositoryIT extends TestBase {
 
-    private final ManufacturerRepository manufacturerRepository = context.getBean(ManufacturerRepository.class);
+    private final ManufacturerRepository manufacturerRepository;
+
+    @Autowired
+    public ManufacturerRepositoryIT(ManufacturerRepository manufacturerRepository) {
+        this.manufacturerRepository = manufacturerRepository;
+    }
 
     @Test
     void saveManufacturerSuccessful() {
         var manufacturer = TestSimpleData.getSimpleTestManufacturer();
 
         manufacturerRepository.save(manufacturer);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         assertThat(manufacturer.getId()).isNotNull();
     }
@@ -30,8 +37,8 @@ public class ManufacturerRepositoryIT extends TestBase {
         manufacturer.addProduct(product);
 
         manufacturerRepository.save(manufacturer);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = manufacturerRepository.findById(manufacturer.getId()).get();
 
@@ -49,8 +56,8 @@ public class ManufacturerRepositoryIT extends TestBase {
         manufacturer.addProduct(product2);
 
         manufacturerRepository.save(manufacturer);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = manufacturerRepository.findById(manufacturer.getId()).get();
 
@@ -66,12 +73,12 @@ public class ManufacturerRepositoryIT extends TestBase {
         manufacturer.addProduct(product);
 
         manufacturerRepository.save(manufacturer);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         manufacturer.setDescription("Another description");
         manufacturerRepository.update(manufacturer);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = manufacturerRepository.findById(manufacturer.getId()).get();
 
@@ -85,8 +92,8 @@ public class ManufacturerRepositoryIT extends TestBase {
         manufacturer.addProduct(product);
 
         manufacturerRepository.save(manufacturer);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         manufacturerRepository.delete(manufacturer);
 
         var actualResult = manufacturerRepository.findById(manufacturer.getId());

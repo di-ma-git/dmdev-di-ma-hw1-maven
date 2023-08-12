@@ -1,16 +1,16 @@
 package com.dima;
 
-import com.dima.config.ApplicationConfiguration;
-import lombok.Cleanup;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
+@Slf4j
+@SpringBootApplication
 public class PharmacyApp {
 
     public static void main(String[] args) {
-        @Cleanup var context = new AnnotationConfigApplicationContext();
-        context.register(ApplicationConfiguration.class);
-        context.refresh();
-        System.out.println("");
-
+        ApplicationContext context = SpringApplication.run(PharmacyApp.class, args);
+        log.info("Pharmacy application has started successfully...");
     }
 }

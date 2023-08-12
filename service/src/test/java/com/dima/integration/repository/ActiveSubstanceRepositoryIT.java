@@ -1,25 +1,31 @@
-package com.dima.repositoryIntegration;
+package com.dima.integration.repository;
 
 import com.dima.dto.ActiveSubstanceFilter;
 import com.dima.entity.ActiveSubstance;
 import com.dima.repository.ActiveSubstanceRepository;
-import com.dima.testData.TestSimpleData;
+import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActiveSubstanceRepositoryIT extends TestBase {
 
-    private final ActiveSubstanceRepository activeSubstanceRepository = context.getBean(ActiveSubstanceRepository.class);
+    private final ActiveSubstanceRepository activeSubstanceRepository;
+    @Autowired
+    public ActiveSubstanceRepositoryIT(ActiveSubstanceRepository activeSubstanceRepository) {
+        this.activeSubstanceRepository = activeSubstanceRepository;
+    }
 
     @Test
     void saveUserSuccessful() {
         var activeSubstance = TestSimpleData.getSimpleTestActiveSubstance();
 
         activeSubstanceRepository.save(activeSubstance);
-        session.flush();
-        session.evict(activeSubstance);
+        entityManager.flush();
+        entityManager.detach(activeSubstance);
 
         assertThat(activeSubstance.getId()).isNotNull();
     }
@@ -29,8 +35,8 @@ public class ActiveSubstanceRepositoryIT extends TestBase {
         var activeSubstance = TestSimpleData.getSimpleTestActiveSubstance();
 
         activeSubstanceRepository.save(activeSubstance);
-        session.flush();
-        session.evict(activeSubstance);
+        entityManager.flush();
+        entityManager.detach(activeSubstance);
 
         var actualResult = activeSubstanceRepository.findById(activeSubstance.getId()).get();
 
@@ -44,12 +50,12 @@ public class ActiveSubstanceRepositoryIT extends TestBase {
         var activeSubstance = TestSimpleData.getSimpleTestActiveSubstance();
 
         activeSubstanceRepository.save(activeSubstance);
-        session.flush();
-        session.evict(activeSubstance);
+        entityManager.flush();
+        entityManager.detach(activeSubstance);
         activeSubstance.setDescription("Another description");
         activeSubstanceRepository.update(activeSubstance);
-        session.flush();
-        session.evict(activeSubstance);
+        entityManager.flush();
+        entityManager.detach(activeSubstance);
 
         var actualResult = activeSubstanceRepository.findById(activeSubstance.getId()).get();
 
@@ -61,8 +67,8 @@ public class ActiveSubstanceRepositoryIT extends TestBase {
         var activeSubstance = TestSimpleData.getSimpleTestActiveSubstance();
 
         activeSubstanceRepository.save(activeSubstance);
-        session.flush();
-        session.evict(activeSubstance);
+        entityManager.flush();
+        entityManager.detach(activeSubstance);
         activeSubstanceRepository.delete(activeSubstance);
 
         var actualResult = activeSubstanceRepository.findById(activeSubstance.getId());

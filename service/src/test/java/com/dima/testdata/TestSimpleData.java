@@ -1,4 +1,4 @@
-package com.dima.testData;
+package com.dima.testdata;
 
 import com.dima.entity.ActiveSubstance;
 import com.dima.entity.Manufacturer;
@@ -19,7 +19,7 @@ public class TestSimpleData {
     public User getSimpleTestUser() {
         return User.builder()
                 .name("someuser2")
-                .email("test2@gmail.com")
+                .email("test42@gmail.com")
                 .password("12345")
                 .phoneNumber("+79876543211")
                 .role(Role.CUSTOMER)
@@ -35,7 +35,7 @@ public class TestSimpleData {
 
     public ProductCategory getSimpleTestProductCategory() {
         return ProductCategory.builder()
-                .name("Painkillers")
+                .name("Antidepressants")
                 .description("Some description")
                 .build();
     }
@@ -52,7 +52,7 @@ public class TestSimpleData {
 
     public Manufacturer getSimpleTestManufacturer() {
         return Manufacturer.builder()
-                .name("Pfizer")
+                .name("Novartis")
                 .country("USA")
                 .description("Some description of manufacturer")
                 .build();
@@ -64,6 +64,4 @@ public class TestSimpleData {
                 .description("Some description")
                 .build();
     }
-
-
 }
