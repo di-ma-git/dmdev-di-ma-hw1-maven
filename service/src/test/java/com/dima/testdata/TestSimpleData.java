@@ -44,7 +44,7 @@ public class TestSimpleData {
         return Product.builder()
                 .name("Aspirine")
                 .price(20.33F)
-                .quantityPerPackaging(60L)
+                .quantityPerPackaging(60)
                 .quantityPerDose(300D)
                 .description("Some description of product")
                 .build();

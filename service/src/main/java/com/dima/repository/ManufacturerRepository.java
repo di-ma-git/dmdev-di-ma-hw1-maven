@@ -1,79 +1,32 @@
 package com.dima.repository;
 
-import com.dima.dto.ManufacturerFilter;
+import com.dima.dto.filters.ManufacturerFilter;
 import com.dima.entity.Manufacturer;
 import com.dima.entity.Manufacturer_;
 import com.dima.entity.Product_;
 
+import com.dima.entity.User;
+import com.dima.repository.filters.FilterManufacturerRepository;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class ManufacturerRepository extends RepositoryBase<Integer, Manufacturer> {
+public interface ManufacturerRepository extends JpaRepository<Manufacturer, Integer>, FilterManufacturerRepository {
 
-    private ManufacturerFilter filter;
+    Optional<Manufacturer> findByName(String name);
+    List<Manufacturer> findAllByCountry(String country);
 
-    public ManufacturerRepository(EntityManager entityManager) {
-        super(Manufacturer.class, entityManager);
-    }
+    @Query("select m from Manufacturer m where m.name like %:fragment%")
+    List<Manufacturer> findAllByNameFragment(String fragment);
 
-    public List<Manufacturer> findByCountry(String country) {
-
-        filter = ManufacturerFilter.builder()
-                .country(country)
-                .build();
-
-        var cb = getEntityManager().getCriteriaBuilder();
-        var criteria = cb.createQuery(Manufacturer.class);
-        var manufacturer = criteria.from(Manufacturer.class);
-
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(manufacturer.get(Manufacturer_.country), filter.getCountry()));
-
-        criteria.select(manufacturer).where(predicates.toArray(Predicate[]::new));
-
-        return getEntityManager().createQuery(criteria).getResultList();
-    }
-
-    public Manufacturer findByName(String name) {
-
-        filter = ManufacturerFilter.builder()
-                .name(name)
-                .build();
-
-        var cb = getEntityManager().getCriteriaBuilder();
-        var criteria = cb.createQuery(Manufacturer.class);
-        var manufacturer = criteria.from(Manufacturer.class);
-
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(manufacturer.get(Manufacturer_.name), filter.getName()));
-
-        criteria.select(manufacturer).where(predicates.toArray(Predicate[]::new));
-
-        return getEntityManager().createQuery(criteria).getResultList().get(0);
-    }
-
-    public List<Manufacturer> findByProductName(String productName) {
-
-        filter = ManufacturerFilter.builder()
-                .productName(productName)
-                .build();
-
-        var cb = getEntityManager().getCriteriaBuilder();
-        var criteria = cb.createQuery(Manufacturer.class);
-        var manufacturer = criteria.from(Manufacturer.class);
-        var productList = manufacturer.join(Manufacturer_.products);
-
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(productList.get(Product_.name), filter.getProductName()));
-
-        criteria.select(manufacturer).where(predicates.toArray(Predicate[]::new));
-
-        return getEntityManager().createQuery(criteria).getResultList();
-    }
-
+    @EntityGraph(attributePaths = "products")
+    @Query("select m from Manufacturer m join fetch m.products where m.name = :name")
+    Optional<Manufacturer> findAllByNameWithProducts(String name);
 
 }

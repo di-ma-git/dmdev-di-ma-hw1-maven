@@ -1,105 +1,24 @@
 package com.dima.integration.repository;
 
+import com.dima.dto.filters.ManufacturerFilter;
 import com.dima.entity.Manufacturer;
+import com.dima.entity.Product;
 import com.dima.repository.ManufacturerRepository;
 import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.nullability.MaybeNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RequiredArgsConstructor
 public class ManufacturerRepositoryIT extends TestBase {
 
     private final ManufacturerRepository manufacturerRepository;
-
-    @Autowired
-    public ManufacturerRepositoryIT(ManufacturerRepository manufacturerRepository) {
-        this.manufacturerRepository = manufacturerRepository;
-    }
-
-    @Test
-    void saveManufacturerSuccessful() {
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-
-        manufacturerRepository.save(manufacturer);
-        entityManager.flush();
-        entityManager.clear();
-
-        assertThat(manufacturer.getId()).isNotNull();
-    }
-
-    @Test
-    void findManufacturerSuccessful() {
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = TestSimpleData.getSimpleTestProduct();
-        manufacturer.addProduct(product);
-
-        manufacturerRepository.save(manufacturer);
-        entityManager.flush();
-        entityManager.clear();
-
-        var actualResult = manufacturerRepository.findById(manufacturer.getId()).get();
-
-        assertThat(actualResult.getId()).isEqualTo(manufacturer.getId());
-        assertThat(actualResult).isEqualTo(manufacturer);
-        assertThat(actualResult.getProducts()).hasSize(1);
-    }
-
-    @Test
-    void findManufacturerSuccessfulWithAllProducts() {
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product1 = TestSimpleData.getSimpleTestProduct();
-        var product2 = TestSimpleData.getSimpleTestProduct();
-        manufacturer.addProduct(product1);
-        manufacturer.addProduct(product2);
-
-        manufacturerRepository.save(manufacturer);
-        entityManager.flush();
-        entityManager.clear();
-
-        var actualResult = manufacturerRepository.findById(manufacturer.getId()).get();
-
-        assertThat(actualResult.getId()).isEqualTo(manufacturer.getId());
-        assertThat(actualResult).isEqualTo(manufacturer);
-        assertThat(actualResult.getProducts()).hasSize(2);
-    }
-
-    @Test
-    void updateManufacturerSuccessful() {
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = TestSimpleData.getSimpleTestProduct();
-        manufacturer.addProduct(product);
-
-        manufacturerRepository.save(manufacturer);
-        entityManager.flush();
-        entityManager.clear();
-        manufacturer.setDescription("Another description");
-        manufacturerRepository.update(manufacturer);
-        entityManager.flush();
-        entityManager.clear();
-
-        var actualResult = manufacturerRepository.findById(manufacturer.getId()).get();
-
-        assertThat(actualResult.getDescription()).isEqualTo(manufacturer.getDescription());
-    }
-
-    @Test
-    void deleteManufacturerSuccessful() {
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = TestSimpleData.getSimpleTestProduct();
-        manufacturer.addProduct(product);
-
-        manufacturerRepository.save(manufacturer);
-        entityManager.flush();
-        entityManager.clear();
-        manufacturerRepository.delete(manufacturer);
-
-        var actualResult = manufacturerRepository.findById(manufacturer.getId());
-
-        assertThat(actualResult).isEmpty();
-    }
 
     @Test
     void findAllManufacturers() {
@@ -111,7 +30,7 @@ public class ManufacturerRepositoryIT extends TestBase {
 
     @Test
     void findManufacturerByCountry() {
-        var result = manufacturerRepository.findByCountry("USA");
+        var result = manufacturerRepository.findAllByCountry("USA");
 
         assertThat(result).hasSize(2);
 
@@ -124,15 +43,47 @@ public class ManufacturerRepositoryIT extends TestBase {
     void findManufacturerByName() {
         var actualResult = manufacturerRepository.findByName("Pfizer");
 
-        assertThat(actualResult.getName()).isEqualTo("Pfizer");
+        assertThat(actualResult.get().getName()).isEqualTo("Pfizer");
     }
 
     @Test
-    void findManufacturerByProduct() {
-        var result = manufacturerRepository.findByProductName("Aspirin");
+    void findManufacturersByNameFragment() {
+        var result = manufacturerRepository.findAllByNameFragment("er");
 
-        var actualResult = result.stream().map(Manufacturer::getName).toList();
+        assertThat(result).hasSize(2);
 
-        assertThat(actualResult).containsExactlyInAnyOrder("Pfizer", "Bayer");
+        var actualResult = result.stream()
+                .map(Manufacturer::getName)
+                .toList();
+
+        assertThat(actualResult).contains("Pfizer", "Bayer");
     }
+
+    @Test
+    void findManufacturerByNameWithProducts() {
+        var manufacturer = manufacturerRepository.findAllByNameWithProducts("Pharmacom");
+
+        var products = manufacturer.get().getProducts();
+
+        assertThat(products).hasSize(2);
+
+        var actualResult = products.stream()
+                .map(Product::getName)
+                .toList();
+
+        assertThat(actualResult).contains("Testosterone", "Boldenone");
+    }
+
+    @Test
+    void findAllManufacturerByCountryFilter() {
+        var filter = ManufacturerFilter.builder()
+                .country("US")
+                .build();
+
+        var result = manufacturerRepository.findAllByFilter(filter);
+
+        assertThat(result).hasSize(2);
+
+    }
+
 }

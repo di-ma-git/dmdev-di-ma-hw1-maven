@@ -69,7 +69,7 @@ public class TestDataImport {
 
         User user1 = createUser(entityManager, CUSTOMER, "User1", "test1@gmail.com", "12345", "79876543211");
         User user2 = createUser(entityManager, CUSTOMER, "User2", "test32@gmail.com", "123456", "79876543212");
-        User user3 = createUser(entityManager, ADMIN, "User3", "admin@admin.pharmacy.com", "1234567", "79876543213");
+        User user3 = createUser(entityManager, ADMIN, "admin1", "admin@admin.pharmacy.com", "1234567", "79876543213");
 
         var order1User1 = createOrder(entityManager, user1, PAID,
                 of(2023, 1, 10, 9, 0),
@@ -122,6 +122,7 @@ public class TestDataImport {
                 .email(email)
                 .password(password)
                 .phoneNumber(phone)
+                .deliveryAddress("test address for all users")
                 .build();
 
         entityManager.persist(user);

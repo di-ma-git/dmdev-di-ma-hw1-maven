@@ -65,6 +65,12 @@
                 <version>1.18.3</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>5.9.3</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -126,7 +132,8 @@
                         <annotationProcessors>
                             <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor
                             </annotationProcessor>
-                            <annotationProcessor>com.querydsl.apt.jpa.JPAAnnotationProcessor</annotationProcessor>
+                            <annotationProcessor>com.querydsl.apt.jpa.JPAAnnotationProcessor
+                            </annotationProcessor>
                             <annotationProcessor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor
                             </annotationProcessor>
                         </annotationProcessors>
