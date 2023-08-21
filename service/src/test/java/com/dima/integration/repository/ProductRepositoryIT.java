@@ -1,4 +1,4 @@
-package com.dima.repositoryIntegration;
+package com.dima.integration.repository;
 
 import com.dima.dto.ProductFilter;
 import com.dima.entity.Product;
@@ -6,19 +6,27 @@ import com.dima.enums.MedicineType;
 import com.dima.repository.ManufacturerRepository;
 import com.dima.repository.ProductCategoryRepository;
 import com.dima.repository.ProductRepository;
-import com.dima.testData.TestSimpleData;
+import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductRepositoryIT extends TestBase {
 
-    private final ProductRepository productRepository = context.getBean(ProductRepository.class);
-    private final ManufacturerRepository manufacturerRepository = context.getBean(ManufacturerRepository.class);
-    private final ProductCategoryRepository productCategoryRepository = context.getBean(ProductCategoryRepository.class);
+    private final ProductRepository productRepository;
+    private final ManufacturerRepository manufacturerRepository;
+    private final ProductCategoryRepository productCategoryRepository;
+
+    @Autowired
+    public ProductRepositoryIT(ProductRepository productRepository, ManufacturerRepository manufacturerRepository, ProductCategoryRepository productCategoryRepository) {
+        this.productRepository = productRepository;
+        this.manufacturerRepository = manufacturerRepository;
+        this.productCategoryRepository = productCategoryRepository;
+    }
 
     @Test
     void saveProductSuccessful() {
@@ -37,8 +45,8 @@ public class ProductRepositoryIT extends TestBase {
         productCategoryRepository.save(productCategory);
         manufacturerRepository.save(manufacturer);
         productRepository.save(product);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = productRepository.findById(product.getId()).get();
 
@@ -68,8 +76,8 @@ public class ProductRepositoryIT extends TestBase {
         productCategoryRepository.save(productCategory);
         manufacturerRepository.save(manufacturer);
         productRepository.save(product);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = productRepository.findById(product.getId()).get();
 
@@ -98,12 +106,12 @@ public class ProductRepositoryIT extends TestBase {
         productCategoryRepository.save(productCategory);
         manufacturerRepository.save(manufacturer);
         productRepository.save(product);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         product.setPrice(25.33F);
-        session.update(product);
-        session.flush();
-        session.clear();
+        entityManager.merge(product);
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = productRepository.findById(product.getId()).get();
 
@@ -130,9 +138,9 @@ public class ProductRepositoryIT extends TestBase {
         productCategoryRepository.save(productCategory);
         manufacturerRepository.save(manufacturer);
         productRepository.save(product);
-        session.flush();
-        session.clear();
-        session.delete(product);
+        entityManager.flush();
+        entityManager.clear();
+        productRepository.delete(product);
 
         var actualResult = productRepository.findById(product.getId());
 

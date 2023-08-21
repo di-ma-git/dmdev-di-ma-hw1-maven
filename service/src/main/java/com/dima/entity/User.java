@@ -1,6 +1,7 @@
 package com.dima.entity;
 
 import com.dima.enums.Role;
+import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,11 +34,14 @@ public class User implements BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String name;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true, nullable = false)
     private String phoneNumber;
     private String deliveryAddress;
 

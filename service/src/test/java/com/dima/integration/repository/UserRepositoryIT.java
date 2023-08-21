@@ -1,24 +1,24 @@
-package com.dima.repositoryIntegration;
+package com.dima.integration.repository;
 
 import com.dima.enums.Role;
 import com.dima.repository.UserRepository;
-import com.dima.testData.TestSimpleData;
+import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UserRepositoryIT extends TestBase {
-
-    private final UserRepository userRepository = context.getBean(UserRepository.class);
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     void saveUserSuccessful() {
         var user = TestSimpleData.getSimpleTestUser();
         userRepository.save(user);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         assertThat(user.getId()).isNotNull();
     }
@@ -29,8 +29,8 @@ class UserRepositoryIT extends TestBase {
         var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
         userRepository.save(user);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = userRepository.findById(user.getId());
 
@@ -44,8 +44,8 @@ class UserRepositoryIT extends TestBase {
         user.addOrder(order);
         userRepository.save(user);
         user.setPassword("54321");
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = userRepository.findById(user.getId());
 
@@ -58,8 +58,8 @@ class UserRepositoryIT extends TestBase {
         var order = TestSimpleData.getSimpleTestOrder();
         user.addOrder(order);
         userRepository.save(user);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         userRepository.delete(user);
 
         var actualResult = userRepository.findById(user.getId());

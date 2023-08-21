@@ -1,26 +1,35 @@
-package com.dima.repositoryIntegration;
+package com.dima.integration.repository;
 
 import com.dima.entity.Product;
 import com.dima.repository.ProductCategoryRepository;
 import com.dima.repository.ProductRepository;
-import com.dima.testData.TestSimpleData;
+import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+//@RequiredArgsConstructor
 public class ProductCategoryRepositoryIT extends TestBase {
 
-    private final ProductCategoryRepository productCategoryRepository = context.getBean(ProductCategoryRepository.class);
-    private final ProductRepository productRepository = context.getBean(ProductRepository.class);
+    private final ProductCategoryRepository productCategoryRepository;
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ProductCategoryRepositoryIT(ProductCategoryRepository productCategoryRepository, ProductRepository productRepository) {
+        this.productCategoryRepository = productCategoryRepository;
+        this.productRepository = productRepository;
+    }
 
     @Test
     void saveProductCategorySuccessful() {
         var productCategory = TestSimpleData.getSimpleTestProductCategory();
 
         productCategoryRepository.save(productCategory);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         assertThat(productCategory.getId()).isNotNull();
     }
@@ -33,8 +42,8 @@ public class ProductCategoryRepositoryIT extends TestBase {
 
         productCategoryRepository.save(productCategory);
         productRepository.save(product);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = productCategoryRepository.findById(productCategory.getId());
 
@@ -49,12 +58,12 @@ public class ProductCategoryRepositoryIT extends TestBase {
 
         productCategoryRepository.save(productCategory);
         productRepository.save(product);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         productCategory.setDescription("Another description");
         productCategoryRepository.update(productCategory);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = productCategoryRepository.findById(productCategory.getId());
 
@@ -69,10 +78,10 @@ public class ProductCategoryRepositoryIT extends TestBase {
 
         productCategoryRepository.save(productCategory);
         productRepository.save(product);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         product.setProductCategory(null);
-        session.merge(product);
+        entityManager.merge(product);
         productCategoryRepository.delete(productCategory);
 
         var actualResult = productCategoryRepository.findById(productCategory.getId());
@@ -88,11 +97,11 @@ public class ProductCategoryRepositoryIT extends TestBase {
 
         productCategoryRepository.save(productCategory);
         productRepository.save(product1);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var product2 = Product.builder()
-                .name("Vitamin C")
+                .name("Vitamin A")
                 .price(123.33F)
                 .quantityPerPackaging(20L)
                 .quantityPerDose(0.3534D)
@@ -102,8 +111,8 @@ public class ProductCategoryRepositoryIT extends TestBase {
                 .build();
         productCategoryRepository.findById(productCategory.getId());
         productRepository.save(product2);
-        session.refresh(productCategory);
-        session.clear();
+        entityManager.merge(productCategory);
+        entityManager.clear();
 
         var actualResult = productCategoryRepository.findById(productCategory.getId());
 

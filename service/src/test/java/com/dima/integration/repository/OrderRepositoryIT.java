@@ -1,4 +1,4 @@
-package com.dima.repositoryIntegration;
+package com.dima.integration.repository;
 
 import com.dima.dto.OrderFilter;
 import com.dima.entity.Order;
@@ -10,20 +10,29 @@ import com.dima.enums.Role;
 import com.dima.repository.OrderRepository;
 import com.dima.repository.UserRepository;
 import com.dima.util.TestBase;
-import org.hibernate.graph.GraphSemantic;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.graph.GraphSemantic;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 public class OrderRepositoryIT extends TestBase {
 
-    private final OrderRepository orderRepository = context.getBean(OrderRepository.class);
-    private final UserRepository userRepository = context.getBean(UserRepository.class);
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public OrderRepositoryIT(OrderRepository orderRepository, UserRepository userRepository) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+    }
 
     @Test
     void saveOrderSuccessful() {
@@ -42,8 +51,8 @@ public class OrderRepositoryIT extends TestBase {
 
         userRepository.save(user);
         orderRepository.save(order);
-        session.flush();
-        session.evict(order);
+        entityManager.flush();
+        entityManager.detach(order);
 
         assertThat(order.getId()).isNotNull();
     }
@@ -65,8 +74,8 @@ public class OrderRepositoryIT extends TestBase {
 
         userRepository.save(user);
         orderRepository.save(order);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = orderRepository.findById(order.getId()).get();
 
@@ -92,8 +101,8 @@ public class OrderRepositoryIT extends TestBase {
         userRepository.save(user);
         orderRepository.save(order);
         order.setOrderStatus(OrderStatus.PAID);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualResult = orderRepository.findById(order.getId()).get();
 
@@ -117,11 +126,11 @@ public class OrderRepositoryIT extends TestBase {
 
         userRepository.save(user);
         orderRepository.save(order);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
         orderRepository.delete(order);
-        session.flush();
-        session.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         var actualOrderResult = orderRepository.findById(order.getId());
         var actualUserResult = userRepository.findById(user.getId()).get();
@@ -151,7 +160,7 @@ public class OrderRepositoryIT extends TestBase {
     @Test
     void findAllProductsFromOrder() {
 
-        var orderRootGraph = session.createEntityGraph(Order.class);
+        var orderRootGraph = entityManager.createEntityGraph(Order.class);
         orderRootGraph.addAttributeNodes("productsInOrder");
         var productInOrderSubGraph = orderRootGraph.addSubgraph("productsInOrder", ProductInOrder.class);
         productInOrderSubGraph.addAttributeNodes("product");
@@ -160,7 +169,9 @@ public class OrderRepositoryIT extends TestBase {
                 GraphSemantic.LOAD.getJpaHintName(), orderRootGraph
         );
 
-        var result = orderRepository.findById(1L, properties).get();
+        var all = orderRepository.findAll();
+
+        var result = orderRepository.findById(all.get(0).getId(), properties).get();
 
 
         var actualResult = result.getProductsInOrder().stream()

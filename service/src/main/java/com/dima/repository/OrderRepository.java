@@ -9,6 +9,7 @@ import com.dima.entity.User_;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import javax.persistence.criteria.Predicate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -30,7 +31,7 @@ public class OrderRepository extends RepositoryBase<Long, Order> {
                 .add(filter.getStatus(), value -> cb.equal(order.get(Order_.orderStatus), value))
                 .add(filter.getUserName(), value -> cb.equal(user.get(User_.name), value))
                 .build();
-        var predicates = cb.and(predicateList.get(0), predicateList.get(1));
+        var predicates = cb.and(predicateList.toArray(Predicate[]::new));
 
         criteria.select(order).where(predicates).distinct(true)
                 .orderBy(cb.asc(order.get(Order_.orderDate)));
