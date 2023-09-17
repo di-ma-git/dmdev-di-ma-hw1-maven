@@ -7,10 +7,7 @@ CREATE TABLE IF NOT EXISTS active_substance
     name        VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR
     );
-
--- ALTER TABLE active_substance
---     owner TO postgres;
---rollback DROP TABLE active_substance
+--rollback DROP TABLE active_substance;
 
 --changeset dmaltsev:2
 CREATE TABLE IF NOT EXISTS manufacturer
@@ -21,10 +18,7 @@ CREATE TABLE IF NOT EXISTS manufacturer
     image       VARCHAR(512),
     description VARCHAR
     );
-
--- ALTER TABLE manufacturer
---     owner TO postgres;
---rollback DROP TABLE manufacturer
+--rollback DROP TABLE manufacturer;
 
 --changeset dmaltsev:3
 CREATE TABLE IF NOT EXISTS product_category
@@ -33,10 +27,7 @@ CREATE TABLE IF NOT EXISTS product_category
     name        VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR
     );
-
--- ALTER TABLE product_category
---     owner TO postgres;
---rollback DROP TABLE product_category
+--rollback DROP TABLE product_category;
 
 --changeset dmaltsev:4
 CREATE TABLE IF NOT EXISTS product
@@ -52,10 +43,7 @@ CREATE TABLE IF NOT EXISTS product
     manufacturer_id                        INTEGER REFERENCES manufacturer (id),
     product_category_id                    INTEGER REFERENCES product_category (id)
     );
-
--- ALTER TABLE product
---     owner TO postgres;
---rollback DROP TABLE product
+--rollback DROP TABLE product;
 
 --changeset dmaltsev:5
 CREATE TABLE IF NOT EXISTS users
@@ -68,10 +56,7 @@ CREATE TABLE IF NOT EXISTS users
     role             VARCHAR(64),
     delivery_address VARCHAR
     );
-
--- ALTER TABLE users
---     owner TO postgres;
---rollback DROP TABLE users
+--rollback DROP TABLE users;
 
 --changeset dmaltsev:6
 CREATE TABLE IF NOT EXISTS product_active_substance
@@ -80,10 +65,7 @@ CREATE TABLE IF NOT EXISTS product_active_substance
     active_substance_id INTEGER REFERENCES active_substance (id),
     product_id          BIGINT REFERENCES product (id)
     );
-
--- ALTER TABLE product_active_substance
---     owner TO postgres;
---rollback DROP TABLE product_active_substance
+--rollback DROP TABLE product_active_substance;
 
 --changeset dmaltsev:7
 CREATE TABLE IF NOT EXISTS orders
@@ -96,10 +78,7 @@ CREATE TABLE IF NOT EXISTS orders
     total_sum    DECIMAL,
     payment      VARCHAR(64)
     );
-
--- ALTER TABLE orders
---     owner TO postgres;
---rollback DROP TABLE orders
+--rollback DROP TABLE orders;
 
 --changeset dmaltsev:8
 CREATE TABLE IF NOT EXISTS product_in_order
@@ -109,8 +88,5 @@ CREATE TABLE IF NOT EXISTS product_in_order
     order_id   BIGINT REFERENCES orders (id),
     product_id BIGINT REFERENCES product (id)
     );
-
--- ALTER TABLE product_in_order
---     owner TO postgres;
---rollback DROP TABLE product_in_order
+--rollback DROP TABLE product_in_order;
 

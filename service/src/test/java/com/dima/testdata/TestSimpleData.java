@@ -21,7 +21,7 @@ public class TestSimpleData {
                 .name("someuser2")
                 .email("test42@gmail.com")
                 .password("12345")
-                .phoneNumber("+79876543211")
+                .phoneNumber("79870003211")
                 .role(Role.CUSTOMER)
                 .build();
     }
@@ -58,9 +58,9 @@ public class TestSimpleData {
                 .build();
     }
 
-    public ActiveSubstance getSimpleTestActiveSubstance() {
+    public ActiveSubstance getSimpleTestActiveSubstance(String name) {
         return ActiveSubstance.builder()
-                .name("Fluoxetine")
+                .name(name)
                 .description("Some description")
                 .build();
     }

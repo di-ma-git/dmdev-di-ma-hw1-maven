@@ -11,9 +11,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    open-in-view: false
   liquibase:
     default-schema: public
-
 
 logging:
   level:
@@ -21,4 +21,8 @@ logging:
   file:
     name: service/pharma.log
     path: /
+
+app:
+  image:
+    bucket: "C:/Users/di.ma/IdeaProjects/_dmdev/dmdev-di-ma-hw1-maven/images"
 

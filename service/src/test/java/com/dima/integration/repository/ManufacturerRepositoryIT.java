@@ -4,14 +4,9 @@ import com.dima.dto.filters.ManufacturerFilter;
 import com.dima.entity.Manufacturer;
 import com.dima.entity.Product;
 import com.dima.repository.ManufacturerRepository;
-import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.utility.nullability.MaybeNull;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

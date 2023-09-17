@@ -1,4 +1,8 @@
 logging:
   level:
-    root: DEBUG
+#    root: DEBUG
     org.testcontainers: INFO
+
+app:
+  image:
+    bucket: classpath:testdata

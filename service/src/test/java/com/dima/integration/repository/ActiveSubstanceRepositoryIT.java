@@ -3,7 +3,6 @@ package com.dima.integration.repository;
 import com.dima.dto.filters.ActiveSubstanceFilter;
 import com.dima.entity.ActiveSubstance;
 import com.dima.repository.ActiveSubstanceRepository;
-import com.dima.testdata.TestSimpleData;
 import com.dima.util.TestBase;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;

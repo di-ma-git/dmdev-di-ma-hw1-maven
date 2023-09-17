@@ -14,7 +14,7 @@ import javax.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class FilterProductRepositoryImpl implements FilterProductRepository{
+public class FilterProductRepositoryImpl implements FilterProductRepository {
 
     private final EntityManager entityManager;
 

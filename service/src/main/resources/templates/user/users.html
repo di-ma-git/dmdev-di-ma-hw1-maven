@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container-fluid text-center">
+    <div>
+        <form th:action="@{/users}" method="get">
+            <label for="name">Name:
+                <input id="name" type="text" name="name" th:value="${filter.name()}">
+            </label>
+            <label for="phoneNumber">Phone:
+                <input id="phoneNumber" type="text" name="phoneNumber" th:value="${filter.phoneNumber()}">
+            </label>
+            <label for="email">Email:
+                <input id="email" type="text" name="email" th:value="${filter.email()}">
+            </label><br>
+            <div>
+                <label for="role">Role:
+                    <select name="role" id="role">
+                        <option></option>
+                        <option th:each="role : ${roles}"
+                                th:text="${role}"
+                                th:value="${role}">Role
+                        </option>
+                    </select>
+                </label>
+            </div>
+            <label for="size"></label>Size:
+            <input id="size" type="number" name="size" th:value="${users.metadata.size}">
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+    <div>
+        <div th:each="user : ${users.content}">
+            <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.name} ${user.email}|">User</a>
+        </div>
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Определение текущей страницы и элементов на странице -->
+        <div th:with="pageSize=${users.metadata.size}">
+                <!--        <div th:with="currentPage=${param.page ?: 1}">-->
+                <!-- Отображение пользователей на текущей странице -->
+                <!--            <div th:each="user : ${users}" th:if="${#dates.listedIndex(user, users) >= (currentPage - 1) * pageSize}"-->
+                <!--                 th:unless="${#dates.listedIndex(user, users) >= currentPage * pageSize}">-->
+                <!--                <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.name} ${user.email}|">User</a>-->
+                <!--            </div>-->
+                <!--        </div>-->
+            </div>
+
+        <!-- Отображение кнопок пагинации -->
+        <div class="pagination justify-content-center">
+            <!-- Кнопка "Previous Page" -->
+            <a th:if="${users.metadata.page > 0}"
+            th:href="@{/users(page=${users.metadata.page - 1})}">Previous Page</a>
+
+            <!-- Кнопки страниц -->
+            <!--        <span th:each="page,iterStat : ${#numbers.sequence(1, #numbers.ceil(#lists.size(users) / pageSize))}"-->
+            <!--              th:class="${iterStat.index + 1 == currentPage} ? 'active'">-->
+            <!--            <a th:href="@{'/users?page=' + page}" th:text="${page}">1</a>-->
+            <!--        </span>-->
+            <!-- Кнопка "Next Page" -->
+            <a th:if="${users.metadata.page < users.metadata.totalElements / users.metadata.size}"
+               th:href="@{/users(page=${users.metadata.page + 1})}">Next Page</a>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

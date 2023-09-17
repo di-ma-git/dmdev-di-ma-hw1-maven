@@ -48,6 +48,7 @@ public class User extends AuditingEntity<Long> {
     @Column(unique = true, nullable = false)
     private String phoneNumber;
     private String deliveryAddress;
+    private String image;
 
     @NotAudited
     @Builder.Default

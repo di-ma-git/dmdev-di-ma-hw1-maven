@@ -21,8 +21,10 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
         var user = criteria.from(User.class);
 
         var predicatesList = CriteriaPredicate.builder()
-                .add(filter.username(), value -> cb.like(user.get(User_.name), value))
-                .add(filter.username(), value -> cb.equal(user.get(User_.role), value))
+                .add(filter.name(), value -> cb.like(cb.lower(user.get(User_.name)), "%" + value.toLowerCase() + "%"))
+                .add(filter.email(), value -> cb.like(cb.lower(user.get(User_.email)), "%" + value.toLowerCase() + "%"))
+                .add(filter.phoneNumber(), value -> cb.like(cb.lower(user.get(User_.phoneNumber)), "%" + value.toLowerCase() + "%"))
+                .add(filter.role(), value -> cb.equal(user.get(User_.role), value))
                 .build();
         var predicates = cb.and(predicatesList.toArray(Predicate[]::new));
 

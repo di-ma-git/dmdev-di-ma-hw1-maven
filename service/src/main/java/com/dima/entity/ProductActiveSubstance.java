@@ -1,5 +1,6 @@
 package com.dima.entity;
 
+import javax.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

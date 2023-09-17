@@ -1,5 +1,6 @@
 package com.dima.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class ActiveSubstance implements BaseEntity<Integer> {
     private String description;
 
     @Builder.Default
-    @OneToMany(mappedBy = "activeSubstance")
+    @OneToMany(mappedBy = "activeSubstance", cascade = CascadeType.ALL)
     private List<ProductActiveSubstance> productActiveSubstances = new ArrayList<>();
 
 }

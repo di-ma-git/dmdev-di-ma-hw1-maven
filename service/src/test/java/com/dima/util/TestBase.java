@@ -2,6 +2,7 @@ package com.dima.util;
 
 import com.dima.testdata.TestDataImport;
 import javax.persistence.EntityManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -28,6 +29,7 @@ public abstract class TestBase {
     @BeforeAll
     static void init() {
         container.start();
+
     }
 
     @BeforeEach
@@ -35,5 +37,10 @@ public abstract class TestBase {
         TestDataImport.importData(entityManager);
         entityManager.flush();
         entityManager.clear();
+    }
+
+    @AfterEach
+    void commit() {
+
     }
 }

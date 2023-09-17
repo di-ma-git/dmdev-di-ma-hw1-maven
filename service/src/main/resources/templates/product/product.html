@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+
+<div>
+    <form th:action="@{/products/{productId}/update(productId=${product.id})}" method="post">
+        <div>
+        <label for="productname">Product name:
+            <input id="productname" type="text" name="name" th:value="${product.name}">
+        </label><br>
+        </div>
+        <div>
+        <label for="quantity">Quantity per packaging:
+            <input id="quantity" type="number" name="quantityPerPackaging" th:value="${product.quantityPerPackaging}">
+        </label><br>
+        </div>
+        <div>
+        <label for="dose">Quantity per dose:
+            <input id="dose" type="number" name="quantityPerDose" th:value="${product.quantityPerDose}">
+        </label><br>
+        </div>
+        <div>
+        <label for="description">Description:
+            <textarea id="description" type="text" name="description" th:field="${product.description}"></textarea>
+        </label><br>
+        </div>
+        <div>
+        <label for="price">Price:
+            <input id="price" type="number" name="price" th:value="${product.price}">
+        </label><br>
+        </div>
+        <div th:each="medicineType : ${medicineTypes}">
+            <input th:id="${medicineType}" type="radio" name="medicineType"
+                   th:value="${medicineType}"
+                   th:checked="${medicineType == product.medicineType}">
+            <label th:for="${medicineType}" th:text="${medicineType}">Medicine name</label>
+        </div>
+        <div>
+            <label for="manufacturer">Manufacturer:
+                <select id="manufacturer" name="manufacturerId">
+                    <option th:each="manufacturer : ${manufacturers}"
+                            th:value="${manufacturer.id}"
+                            th:selected="${manufacturer.id == product.manufacturer.id}"
+                            th:text="${manufacturer.name}">Manufacturer</option>
+                </select>
+            </label>
+        </div>
+        <div>
+            <label for="productcategory">Product Category:
+                <select id="productcategory" name="productCategoryId">
+                    <option th:each="productCategory : ${productCategories}"
+                            th:value="${productCategory.id}"
+                            th:selected="${productCategory.id == product.productCategory.id}"
+                            th:text="${productCategory.name}">Product Category</option>
+                </select>
+            </label>
+        </div>
+        <div th:each="activeSubstance : ${activeSubstances}">
+            <input th:id="${activeSubstance.name}" type="checkbox" name="activeSubstancesIds"
+                   th:value="${activeSubstance.id}"
+                   th:checked="${product.activeSubstances.contains(activeSubstance)}">
+            <label th:for="${activeSubstance.name}" th:text="${activeSubstance.name}">Active substance</label><br>
+        </div>
+
+<div>
+    <button type="submit">Update</button>
+</div>
+
+    </form>
+    <form th:action="@{/products/{productId}/delete(productId=${product.id})}" method="post">
+        <button type="submit">Delete</button>
+    </form>
+</div>
+
+</body>
+
+</html>

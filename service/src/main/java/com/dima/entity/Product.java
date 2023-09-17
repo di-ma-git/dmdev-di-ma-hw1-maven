@@ -19,9 +19,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +52,20 @@ public class Product implements BaseEntity<Long> {
     private Manufacturer manufacturer;
 
     @Builder.Default
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<ProductActiveSubstance> productActiveSubstances = new ArrayList<>();
+
+    public void addProductActiveSubstance(ProductActiveSubstance productActiveSubstance) {
+        productActiveSubstances.add(productActiveSubstance);
+        productActiveSubstance.setProduct(this);
+    }
+
+    public void addProductActiveSubstance(List<ProductActiveSubstance> pas) {
+//        productActiveSubstances.addAll(productActiveSubstances);
+        for (ProductActiveSubstance productActiveSubstance : pas) {
+            productActiveSubstances.add(productActiveSubstance);
+            productActiveSubstance.setProduct(this);
+        }
+    }
+
 }
