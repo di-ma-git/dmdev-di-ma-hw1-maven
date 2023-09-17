@@ -20,6 +20,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Data
 @NoArgsConstructor
@@ -29,7 +32,8 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users")
-public class User implements BaseEntity<Long> {
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+public class User extends AuditingEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +49,7 @@ public class User implements BaseEntity<Long> {
     private String phoneNumber;
     private String deliveryAddress;
 
+    @NotAudited
     @Builder.Default
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();

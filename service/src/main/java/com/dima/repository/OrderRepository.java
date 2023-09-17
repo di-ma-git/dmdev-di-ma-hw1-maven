@@ -1,44 +1,25 @@
 package com.dima.repository;
 
-import com.dima.dao.CriteriaPredicate;
-import com.dima.dto.OrderFilter;
 import com.dima.entity.Order;
-import com.dima.entity.Order_;
-import com.dima.entity.ProductInOrder_;
-import com.dima.entity.User_;
-
-import javax.persistence.EntityManager;
+import com.dima.entity.Product;
+import com.dima.entity.User;
+import com.dima.enums.OrderStatus;
+import com.dima.repository.filters.FilterOrderRepository;
+import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.criteria.Predicate;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-@Repository
-public class OrderRepository extends RepositoryBase<Long, Order> {
-
-    public OrderRepository(EntityManager entityManager) {
-        super(Order.class, entityManager);
-    }
-
-    public List<Order> findOrdersByFilter(OrderFilter filter) {
-        var cb = getEntityManager().getCriteriaBuilder();
-        var criteria = cb.createQuery(Order.class);
-        var order = criteria.from(Order.class);
-        var user = order.join(Order_.user);
-        var productInOrder = order.join(Order_.productsInOrder);
-        var product = productInOrder.join(ProductInOrder_.product);
-
-        var predicateList = CriteriaPredicate.builder()
-                .add(filter.getStatus(), value -> cb.equal(order.get(Order_.orderStatus), value))
-                .add(filter.getUserName(), value -> cb.equal(user.get(User_.name), value))
-                .build();
-        var predicates = cb.and(predicateList.toArray(Predicate[]::new));
-
-        criteria.select(order).where(predicates).distinct(true)
-                .orderBy(cb.asc(order.get(Order_.orderDate)));
-
-        return getEntityManager().createQuery(criteria).getResultList();
-
-
-    }
-
+public interface OrderRepository extends
+        JpaRepository<Order, Long>,
+        FilterOrderRepository,
+        JpaSpecificationExecutor<Order> {
+    List<Order> findAllByUser(User user);
+    List<Order> findAllByUserAndOrderDate(User user, LocalDateTime date);
+    List<Order> findAllByUserAndOrderDateAndAndOrderStatus(User user, LocalDateTime date, OrderStatus status);
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = {"productsInOrder.product"})
+    Optional<Order> findById(Long id);
 }

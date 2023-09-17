@@ -1,28 +1,27 @@
 package com.dima.repository;
 
+import com.dima.dto.UserInfo;
 import com.dima.entity.User;
-import com.dima.entity.User_;
 import com.dima.enums.Role;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
+import com.dima.repository.filters.FilterUserRepository;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.history.RevisionRepository;
+public interface UserRepository extends
+        JpaRepository<User, Long>,
+        FilterUserRepository,
+        RevisionRepository<User, Long, Integer>,
+        JpaSpecificationExecutor<User> {
+    List<User> findAllByRole(Role role);
+    Optional<UserInfo> findByPhoneNumber(String phone);
+    @Query("select u from User u where u.name like %:fragment%")
+    List<User> findAllByNameFragment(String fragment);
 
-@Repository
-public class UserRepository extends RepositoryBase<Long, User> {
+    @Query("select u from User u where u.name like %:fragment%")
+    List<User> findAllByNameContainingIgnoreCase(String fragment);
 
-    public UserRepository(EntityManager entityManager) {
-        super(User.class, entityManager);
-    }
-
-    public List<User> findUsersByRole(Role role) {
-        var cb = getEntityManager().getCriteriaBuilder();
-        var criteria = cb.createQuery(User.class);
-        var user = criteria.from(User.class);
-
-        criteria.select(user).where(cb.equal(user.get(User_.role), role));
-
-        return entityManager.createQuery(criteria).getResultList();
-    }
 
 }

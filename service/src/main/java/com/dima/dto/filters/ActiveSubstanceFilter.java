@@ -1,4 +1,4 @@
-package com.dima.dto;
+package com.dima.dto.filters;
 
 import lombok.Builder;
 import lombok.Value;

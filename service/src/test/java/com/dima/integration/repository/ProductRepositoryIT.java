@@ -1,150 +1,75 @@
 package com.dima.integration.repository;
 
-import com.dima.dto.ProductFilter;
+import com.dima.dto.filters.ProductFilter;
 import com.dima.entity.Product;
 import com.dima.enums.MedicineType;
-import com.dima.repository.ManufacturerRepository;
-import com.dima.repository.ProductCategoryRepository;
 import com.dima.repository.ProductRepository;
-import com.dima.testdata.TestSimpleData;
+import com.dima.specification.ProductSpecification;
 import com.dima.util.TestBase;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RequiredArgsConstructor
 public class ProductRepositoryIT extends TestBase {
 
     private final ProductRepository productRepository;
-    private final ManufacturerRepository manufacturerRepository;
-    private final ProductCategoryRepository productCategoryRepository;
 
-    @Autowired
-    public ProductRepositoryIT(ProductRepository productRepository, ManufacturerRepository manufacturerRepository, ProductCategoryRepository productCategoryRepository) {
-        this.productRepository = productRepository;
-        this.manufacturerRepository = manufacturerRepository;
-        this.productCategoryRepository = productCategoryRepository;
+    @Test
+    void sortProductsByPriceWithPagination() {
+        var sortBy = Sort.sort(Product.class);
+        var sort = sortBy.by(Product::getPrice);
+
+        var pageable = PageRequest.of(1, 2, sort);
+
+        var result = productRepository.findAllBy(pageable);
+
+        assertThat(result).hasSize(2);
+
+        var actualResult = result.stream()
+                .map(Product::getPrice)
+                .toList();
+
+        assertThat(actualResult).containsExactly(16.99F, 45.00F);
+
     }
 
     @Test
-    void saveProductSuccessful() {
-        var productCategory = TestSimpleData.getSimpleTestProductCategory();
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = Product.builder()
-                .name("Aspirine")
-                .price(20.33F)
-                .quantityPerPackaging(60L)
-                .quantityPerDose(300D)
-                .description("Some description of product")
-                .productCategory(productCategory)
-                .manufacturer(manufacturer)
-                .build();
+    void findAllProductsByProductCategoryWithSortAndPagination() {
+        var sortBy = Sort.sort(Product.class);
+        var sort = sortBy.by(Product::getName);
 
-        productCategoryRepository.save(productCategory);
-        manufacturerRepository.save(manufacturer);
-        productRepository.save(product);
-        entityManager.flush();
-        entityManager.clear();
+        var pageable = PageRequest.of(0, 2, sort);
 
-        var actualResult = productRepository.findById(product.getId()).get();
+        var result = productRepository.findAllByProductCategoryName("Painkillers", pageable);
 
-        assertThat(actualResult.getId()).isNotNull();
-        assertThat(actualResult.getManufacturer().getId()).isEqualTo(manufacturer.getId());
-        assertThat(actualResult.getProductCategory().getId()).isEqualTo(productCategory.getId());
-    }
+        assertThat(result).hasSize(2);
 
-
-    @Test
-    void findProductByIdSuccessful() {
-        var productCategory = TestSimpleData.getSimpleTestProductCategory();
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = Product.builder()
-                .name("Aspirine")
-                .price(20.33F)
-                .quantityPerPackaging(60L)
-                .quantityPerDose(300D)
-                .description("Some description of product")
-                .productCategory(productCategory)
-                .manufacturer(manufacturer)
-                .build();
-        product.setProductCategory(productCategory);
-        product.setManufacturer(manufacturer);
-        productCategory.addProduct(product);
-
-        productCategoryRepository.save(productCategory);
-        manufacturerRepository.save(manufacturer);
-        productRepository.save(product);
-        entityManager.flush();
-        entityManager.clear();
-
-        var actualResult = productRepository.findById(product.getId()).get();
-
-        assertThat(actualResult.getId()).isEqualTo(product.getId());
-        assertThat(actualResult.getManufacturer()).isEqualTo(manufacturer);
-        assertThat(actualResult.getProductCategory().getProducts().get(0)).isEqualTo(product);
     }
 
     @Test
-    void updateProductSuccessful() {
-        var productCategory = TestSimpleData.getSimpleTestProductCategory();
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = Product.builder()
-                .name("Aspirine")
-                .price(20.33F)
-                .quantityPerPackaging(60L)
-                .quantityPerDose(300D)
-                .description("Some description of product")
-                .productCategory(productCategory)
-                .manufacturer(manufacturer)
-                .build();
-        product.setProductCategory(productCategory);
-        product.setManufacturer(manufacturer);
-        productCategory.addProduct(product);
+    void sortProductsByPriceWithCountPagination() {
+        var sortBy = Sort.sort(Product.class);
+        var sort = sortBy.by(Product::getPrice);
 
-        productCategoryRepository.save(productCategory);
-        manufacturerRepository.save(manufacturer);
-        productRepository.save(product);
-        entityManager.flush();
-        entityManager.clear();
-        product.setPrice(25.33F);
-        entityManager.merge(product);
-        entityManager.flush();
-        entityManager.clear();
+        var pageable = PageRequest.of(1, 2, sort);
 
-        var actualResult = productRepository.findById(product.getId()).get();
+        var result = productRepository.findAllBy(pageable);
 
-        assertThat(actualResult.getPrice()).isEqualTo(product.getPrice());
-    }
+        assertThat(result).hasSize(2);
+        assertThat(result.getTotalElements()).isEqualTo(6);
+        assertThat(result.getTotalPages()).isEqualTo(3);
 
-    @Test
-    void deleteProductSuccessful() {
-        var productCategory = TestSimpleData.getSimpleTestProductCategory();
-        var manufacturer = TestSimpleData.getSimpleTestManufacturer();
-        var product = Product.builder()
-                .name("Aspirine")
-                .price(20.33F)
-                .quantityPerPackaging(60L)
-                .quantityPerDose(300D)
-                .description("Some description of product")
-                .productCategory(productCategory)
-                .manufacturer(manufacturer)
-                .build();
-        product.setProductCategory(productCategory);
-        product.setManufacturer(manufacturer);
-        productCategory.addProduct(product);
+        var actualResult = result.stream()
+                .map(Product::getPrice)
+                .toList();
 
-        productCategoryRepository.save(productCategory);
-        manufacturerRepository.save(manufacturer);
-        productRepository.save(product);
-        entityManager.flush();
-        entityManager.clear();
-        productRepository.delete(product);
+        assertThat(actualResult).containsExactly(16.99F, 45.00F);
 
-        var actualResult = productRepository.findById(product.getId());
-
-        assertThat(actualResult).isEmpty();
     }
 
     @Test
@@ -153,7 +78,7 @@ public class ProductRepositoryIT extends TestBase {
                 .name("Aspirin")
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(2);
 
@@ -165,12 +90,81 @@ public class ProductRepositoryIT extends TestBase {
     }
 
     @Test
+    void findAllProductsByNameFragment() {
+        var filter = ProductFilter.builder()
+                .name("pirin")
+                .build();
+
+        var result = productRepository.findAllByFilter(filter);
+
+        assertThat(result).hasSize(2);
+
+        var actualResult = result.stream()
+                .map(Product::getName)
+                .findFirst();
+
+        assertThat(actualResult.get()).contains("Aspirin");
+    }
+
+    @Test
+    void findAllProductsByNameFragmentPageable() {
+        var sortBy = Sort.sort(Product.class);
+        var sort = sortBy.by(Product::getPrice);
+
+        var pageable = PageRequest.of(0, 2, sort);
+
+        var filter = ProductFilter.builder()
+                .name("pirin")
+                .build();
+
+        var specification = ProductSpecification.withFilter(filter);
+
+        var result = productRepository.findAll(specification, pageable);
+
+        assertThat(result).hasSize(2);
+        assertThat(result.getTotalElements()).isEqualTo(2);
+        assertThat(result.getTotalPages()).isEqualTo(1);
+
+        var actualResult = result.stream()
+                .map(Product::getName)
+                .findFirst();
+
+        assertThat(actualResult.get()).contains("Aspirin");
+    }
+
+    @Test
+    void findAllProductsByActiveSubstancePageable() {
+        var sortBy = Sort.sort(Product.class);
+        var sort = sortBy.by(Product::getName);
+
+        var pageable = PageRequest.of(0, 10, sort);
+
+        var filter = ProductFilter.builder()
+                .activeSubstance("acid")
+                .build();
+
+        var specification = ProductSpecification.withFilter(filter);
+
+        var result = productRepository.findAll(specification, pageable);
+
+        assertThat(result).hasSize(6);
+        assertThat(result.getTotalElements()).isEqualTo(6);
+        assertThat(result.getTotalPages()).isEqualTo(1);
+
+        var actualResult = result.stream()
+                .map(Product::getName)
+                .toList();
+
+        assertThat(actualResult).contains("Aspirin", "Vitamin complex", "Vitamin C");
+    }
+
+    @Test
     void findAllProductsByManufacturerName() {
         var filter = ProductFilter.builder()
                 .manufacturer("Pharmacom")
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(2);
 
@@ -187,7 +181,7 @@ public class ProductRepositoryIT extends TestBase {
                 .productCategory("Painkillers")
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(2);
 
@@ -204,7 +198,7 @@ public class ProductRepositoryIT extends TestBase {
                 .medicineTypes(List.of(MedicineType.CAPSULES, MedicineType.INJECTIONS))
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(6);
 
@@ -221,7 +215,7 @@ public class ProductRepositoryIT extends TestBase {
                 .activeSubstance("Ascorbic acid")
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(4);
 
@@ -239,7 +233,7 @@ public class ProductRepositoryIT extends TestBase {
                 .priceMax(300F)
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(3);
 
@@ -258,7 +252,7 @@ public class ProductRepositoryIT extends TestBase {
                 .priceMax(50F)
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(4);
 
@@ -276,7 +270,7 @@ public class ProductRepositoryIT extends TestBase {
                 .manufacturer("Bayer")
                 .build();
 
-        var result = productRepository.findByFilter(filter);
+        var result = productRepository.findAllByFilter(filter);
 
         assertThat(result).hasSize(2);
 

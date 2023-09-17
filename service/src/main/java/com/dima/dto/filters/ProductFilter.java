@@ -1,4 +1,4 @@
-package com.dima.dto;
+package com.dima.dto.filters;
 
 import com.dima.enums.MedicineType;
 import lombok.Builder;

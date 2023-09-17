@@ -42,7 +42,7 @@ public class Product implements BaseEntity<Long> {
     private String name;
     private String image;
     private Float price;
-    private Long quantityPerPackaging;
+    private Integer quantityPerPackaging;
     @Column(name = "quantity_active_substance_per_one_dose")
     private Double quantityPerDose;
     private String description;

@@ -1,8 +1,4 @@
-jpa:
-  hibernate:
-    ddl-auto: create
-
-
 logging:
   level:
-    root: INFO
+    root: DEBUG
+    org.testcontainers: INFO

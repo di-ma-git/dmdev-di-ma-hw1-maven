@@ -9,11 +9,16 @@ spring:
     hibernate:
       ddl-auto: validate
     properties:
-      hibernate.format_sql: true
+      hibernate:
+        format_sql: true
+  liquibase:
+    default-schema: public
+
 
 logging:
   level:
-    root: INFO
+    org.springframework.jdbc.core: TRACE
   file:
     name: service/pharma.log
     path: /
+

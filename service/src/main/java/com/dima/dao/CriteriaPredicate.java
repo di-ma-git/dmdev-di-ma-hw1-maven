@@ -25,7 +25,7 @@ public class CriteriaPredicate {
 
     public <K extends Collection<?>> CriteriaPredicate add(K collection, Function<K, Predicate> function) {
         if (collection != null && !collection.isEmpty()) {
-                predicates.add(function.apply(collection));
+            predicates.add(function.apply(collection));
         }
         return this;
     }
@@ -41,14 +41,15 @@ public class CriteriaPredicate {
     }
 
     public CriteriaPredicate add(Supplier<Boolean> condition, Supplier<Predicate> predicate) {
-        if (condition.get()) { predicates.add(predicate.get()); }
+        if (condition.get()) {
+            predicates.add(predicate.get());
+        }
         return this;
     }
 
     public List<Predicate> build() {
         return predicates;
     }
-
 
 
 }
